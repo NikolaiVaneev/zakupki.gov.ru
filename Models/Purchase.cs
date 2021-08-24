@@ -24,11 +24,14 @@ namespace zakupki.gov.ru.Models
         {
             get
             {
-                if (_determinig != null) {
+                if (_determinig != null)
+                {
                     if (_determinig.Contains("Электронный аукцион"))
                         return "ЭА";
                     else if (_determinig.Contains("Запрос котировок"))
                         return "КОТ";
+                    else 
+                        return _determinig;
                 }
                 return _determinig;
             }
@@ -98,7 +101,7 @@ namespace zakupki.gov.ru.Models
         /// </summary>
         public string Restrictions
         {
-            get 
+            get
             {
                 string temp = string.Empty;
                 if (_determinig.Contains("субъекты малого") || _restrictions.Contains("субъектов малого"))
@@ -108,6 +111,20 @@ namespace zakupki.gov.ru.Models
                 return temp;
             }
             set => _restrictions = value;
+        }
+
+        private string _restrictions2;
+        /// <summary>
+        /// Ограничения 2 колонка
+        /// </summary>
+        public string Restrictions2
+        {
+            get
+            {
+
+                return _restrictions2;
+            }
+            set => _restrictions2 = value;
         }
         /// <summary>
         /// Исходящий номер письма
@@ -137,40 +154,45 @@ namespace zakupki.gov.ru.Models
         /// Платежные реквизиты
         /// </summary>
         private string _paymentDetails = string.Empty;
-        public string PaymentDetails { 
+        public string PaymentDetails
+        {
             get
             {
                 string result = string.Empty;
 
-                if (!string.IsNullOrEmpty(Company.INN))
+                if (Company != null)
                 {
-                    result += $"ИНН {Company.INN}\v";
-                }
-                if (!string.IsNullOrEmpty(Company.KPP))
-                {
-                    result += $"КПП {Company.KPP}\v";
-                }
-                if (!string.IsNullOrEmpty(Company.OGRN))
-                {
-                    result += $"КПП {Company.OGRN}\v";
-                }
-                result += "\v";
+                    if (!string.IsNullOrEmpty(Company.INN))
+                    {
+                        result += $"ИНН {Company.INN}\v";
+                    }
+                    if (!string.IsNullOrEmpty(Company.KPP))
+                    {
+                        result += $"КПП {Company.KPP}\v";
+                    }
+                    if (!string.IsNullOrEmpty(Company.OGRN))
+                    {
+                        result += $"КПП {Company.OGRN}\v";
+                    }
+                    result += "\v";
 
-                string[] detail = _paymentDetails.Split(',');
-                foreach (var item in detail)
-                {
-                    result += item.Trim() + "\v";
+                    string[] detail = _paymentDetails.Split(',');
+                    foreach (var item in detail)
+                    {
+                        result += item.Trim() + "\v";
+                    }
                 }
-
-                 return result;
+                return result;
             }
-            set => _paymentDetails = value; }
+            set => _paymentDetails = value;
+        }
 
         private string _prepaidExpense = string.Empty;
         /// <summary>
         /// Размер обеспечения исполнения контракта
         /// </summary>
-        public string PrepaidExpense {
+        public string PrepaidExpense
+        {
             get
             {
 
@@ -199,7 +221,8 @@ namespace zakupki.gov.ru.Models
                     if (rubString[rubString.Length - 1] != 'ь')
                     {
                         ext = "рубля";
-                    } else
+                    }
+                    else
                     if (rubString[rubString.Length - 1] != 'н')
                     {
                         ext = "рубль";

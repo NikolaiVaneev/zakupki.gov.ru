@@ -204,8 +204,18 @@ namespace zakupki.gov.ru
                 }
                 if (block.Text.Contains("Ограничения и запреты"))
                 {
-                    purchase.Restrictions = block.FindElement(By.ClassName("section__info")).Text;
+                    string rest = block.FindElement(By.ClassName("section__info")).Text;
+                    purchase.Restrictions = rest;
 
+                    if (rest.Contains("\r\n2 "))
+                    {
+                        var npa = browser.FindElements(By.ClassName("npa-card"));
+                        if (npa.Count > 0)
+                        {
+                            var columns = npa[0].FindElements(By.TagName("td"));
+                            purchase.Restrictions2 = columns[1].Text;
+                        }
+                    }
                 }
                 if (block.Text.Contains("Платежные реквизиты для обеспечения исполнения контракта"))
                 {
@@ -251,6 +261,7 @@ namespace zakupki.gov.ru
         private static Purchase GetPurcaheAs223(Purchase purchase)
         {
             var rows = browser.FindElements(By.TagName("tr"));
+            Company company = new Company();
 
             foreach (var row in rows)
             {
@@ -274,7 +285,8 @@ namespace zakupki.gov.ru
                     {
                         purchase.Customer = cols[1].Text;
                     }
-                    if (cols[0].Text.Contains("Дата и время окончания подачи заявок"))
+                    //if (cols[0].Text.Contains("Дата и время окончания подачи заявок"))
+                    if (cols[0].Text.Contains("Дата подведения итогов"))
                     {
                         purchase.ApplicationDeadline = cols[1].Text;
                     }
@@ -282,9 +294,33 @@ namespace zakupki.gov.ru
                     {
                         purchase.DateAuction = cols[1].Text;
                     }
+
+                    // Данные об организации
+                 
+                    if (cols[0].Text.Contains("ИНН") && company.INN == null)
+                    {
+                        company.INN = cols[1].Text;
+                    }
+                    if (cols[0].Text.Contains("КПП") && company.KPP == null)
+                    {
+                        company.KPP = cols[1].Text;
+                    }
+                    if (cols[0].Text.Contains("Наименование организации") && company.Title == null)
+                    {
+                        company.Title = cols[1].Text;
+                    }
+                    if (cols[0].Text.Contains("ОГРН") && company.OGRN == null)
+                    {
+                        company.OGRN = cols[1].Text;
+                    }                   
+                    if (cols[0].Text.Contains("Место нахождения") && company.Address == null)
+                    {
+                        company.Address = cols[1].Text;
+                    }
+                   
                 }
             }
-
+            purchase.Company = company;
             purchase.TimeZone = browser.FindElement(By.ClassName("public")).Text;
             return purchase;
         }

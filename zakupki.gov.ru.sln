@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zakupki.gov.ru", "zakupki.g
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Activator", "..\Activator\Activator.csproj", "{BFCEFBEF-E18E-42FF-A3F2-1DE0DB044C00}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Office", "Office", "{59AD8C85-FD8E-427B-92F7-3DF37667DB55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

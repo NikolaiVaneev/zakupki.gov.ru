@@ -59,13 +59,21 @@ namespace zakupki.gov.ru
             Settings settings = new Settings().Load();
             activateKey = settings.License;
             AddLogMessage("Настройки загружены");
-            // HACK : Проверка лицензии отключена на время тестирования
-            //if (!Cryptographer.CheckActivationApp(activateKey))
-            //{
-            //    Code.IsEnabled = false;
-            //    License license = new License();
-            //    license.Show();
-            //}
+
+            // HACK : Проверка лицензии отключается на время тестирования
+            // Сделал отдельную переменную, чтобы код не комментить каждый раз
+            bool appTesting = false;
+            if (!appTesting)
+            {
+                if (!Cryptographer.CheckActivationApp(activateKey))
+                {
+                    Code.IsEnabled = false;
+                    License license = new License();
+                    license.Show();
+                }
+            }
+            
+
 
 
         }
@@ -265,10 +273,12 @@ namespace zakupki.gov.ru
 
             if (!string.IsNullOrEmpty(settings.PrivisionFilePath) && File.Exists(settings.PrivisionFilePath))
             {
-               // string savePath = Path.Combine(AppPath, Path.GetFileName(settings.PrivisionFilePath));
-                string savePath = Path.Combine(AppPath, Path.GetFileName(settings.PrivisionFilePath));
+           
+                // string savePath = Path.Combine(AppPath, Path.GetFileName(settings.PrivisionFilePath));
+                string savePath = Path.Combine(AppPath, $"ОИК_{purchase.Number.Substring(purchase.Number.Length - 4)}{Path.GetExtension(settings.PrivisionFilePath)}");
                 WordWorker.CreateDocument(settings.PrivisionFilePath, savePath, purchase);
                 AddLogMessage("Обеспечение исполнения контракта");
+
             }
 
             // Копирование PDF
@@ -302,7 +312,7 @@ namespace zakupki.gov.ru
                 "Несанкционированное использование данного программного " +
                 "продукта не в интересах правообладателя наносит экономический вред правообладателю, со всеми " +
                 "вытекающими последствиями в соответствии с УК и КоАП РФ." + Environment.NewLine +
-                "Тел.: +7 (996) 062 - 72 - 72, +7 (909) 563 - 64 - 64",
+                "Тел.: +7 (996) 062-72-72, +7 (909) 563-64-64",
                 "О программе",
                 MessageBoxButton.OK,
                 MessageBoxImage.Information);

@@ -95,7 +95,8 @@ namespace zakupki.gov.ru
 
             sheet.Hyperlinks.Add(sheet.Cells[row, 3], hyperLink, Type.Missing, "Процедура №" + purchase.Number, "№ " + purchase.Number);
             sheet.Cells[row, 4].Value = string.Format("{0:dd.MM.yyyy}", DateTime.Now.Date);
-            sheet.Cells[row, 5].Value = purchase.Price;
+
+            
             sheet.Cells[row, 6].Value = purchase.DateAuction;
             sheet.Cells[row, 7].Value = purchase.TimeAuction;
             sheet.Cells[row, 8].Value = purchase.Determining;
@@ -105,7 +106,12 @@ namespace zakupki.gov.ru
             sheet.Cells[row, 12].Value = purchase.ApplicationDeadline;
             sheet.Cells[row, 15].Value = purchase.Customer;
             sheet.Cells[row, 16].Value = purchase.ProcurementObject;
-            sheet.Cells[row, 17].Value = purchase.Restrictions;
+            if (purchase.FederalLaw == "44-ФЗ")
+            {
+                sheet.Cells[row, 5].Value = purchase.Price;
+                sheet.Cells[row, 17].Value = purchase.Restrictions;
+                sheet.Cells[row, 18].Value = purchase.Restrictions2;
+            }
         }
     }
 }

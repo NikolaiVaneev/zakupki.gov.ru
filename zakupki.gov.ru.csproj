@@ -96,7 +96,7 @@
     </Compile>
     <Compile Include="Services.cs" />
     <Compile Include="Settings.cs" />
-    <Compile Include="WordWorker.cs" />
+    <Compile Include="Office\WordWorker.cs" />
     <Page Include="License.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -109,7 +109,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="ExcelWorker.cs" />
+    <Compile Include="Office\ExcelWorker.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
